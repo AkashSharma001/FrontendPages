@@ -41,12 +41,12 @@ const CustomizedDot: React.FC<DotProps> = (props) => {
 
 // Custom tooltip component for displaying tooltip content
 const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
+  if (active && payload && payload.length > 0) {
     const hoveredPayload = payload[0];
     return (
       <div className="custom-tooltip" style={{ backgroundColor: 'white', padding: '5px', border: '1px solid #ccc' }}>
         <p className="label">{`Year: ${label}`}</p>
-        <p >{`${hoveredPayload.dataKey}: ${hoveredPayload.value}`}</p>
+        <p>{`${hoveredPayload?.dataKey}: ${hoveredPayload?.value}`}</p>
       </div>
     );
   }
