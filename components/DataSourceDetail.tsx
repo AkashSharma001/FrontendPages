@@ -1,10 +1,11 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+
 import LineChart from './DataSource/LineChart'
 import HorizontalBarChart from './DataSource/HorizontalBarChart'
 import UsabilityScore from './DataSource/UsabilityScore'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
 
-export function DataSourceDetail() {
+export default function DataSourceDetail() {
   const sampleLineChartData = [
     {
       id: 'A',
