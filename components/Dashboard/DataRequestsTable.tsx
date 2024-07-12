@@ -8,10 +8,10 @@ import {
   TableHead,
   TableBody,
   TableCell
-} from 'components/ui/table'
-import { Checkbox } from 'components/ui/checkbox'
-import { Badge } from 'components/ui/badge'
-import { Avatar, AvatarFallback } from 'components/ui/avatar'
+} from '@/components/ui/table'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { ScrollArea, ScrollBar } from '../ui/scroll-area'
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
 import Image from 'next/image'
