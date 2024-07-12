@@ -1,112 +1,123 @@
 'use client'
 
-import { ResponsiveBar } from '@nivo/bar'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import React from 'react';
+import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+
+interface DataPoint {
+  age: string;
+  percentage: number;
+}
 
 interface HorizontalBarChartProps {
-  data: Array<{ age: string; percentage: number }>
-  className?: string
+  data: DataPoint[];
+  title: string;
+  valueKey: string;
+  color: string;
+  height?: number;
 }
 
 /**
  * HorizontalBarChart Component
  *
- * This component renders a horizontal bar chart using the ResponsiveBar component from @nivo/bar.
- * It displays demographic percentages based on the provided data array.
+ * This component renders a horizontal bar chart using the BarChart component from Recharts.
+ * It visualizes data points with categorical Y-axis and numeric X-axis.
  *
- * @param data - Array of objects containing 'name' and 'percentage' fields to render bars for each demographic category.
- * @param className - Optional CSS class name to customize the styling of the chart container.
+ * @param data - Array of objects containing 'age' and 'percentage' fields.
+ * @param title - Title for the chart displayed in the CardHeader.
+ * @param valueKey - Key in data objects to access numeric value (percentage).
+ * @param color - Color code or name used for styling bars.
+ * @param height - Optional height for ResponsiveContainer.
  */
+
 
 const HorizontalBarChart: React.FC<HorizontalBarChartProps> = ({
   data,
-  className
-}) => (
-  <Card>
-    {/* Card header with title */}
-    <CardHeader>
-      <CardTitle>Demographics %</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className={className}>
-        {/* ResponsiveBar component from @nivo/bar */}
-        <ResponsiveBar
-          data={data}
-          keys={['percentage']}
-          indexBy="age"
-          layout="horizontal"
-          padding={0.2}
-          colors={['#bfa9f9']}
-          enableGridX // Enable grid lines on the X-axis
-          margin={{ top: 0, right: 7, bottom: 10, left: 5 }} // Adjust margins for better layout
-          axisLeft={null} // Hide the Y-axis
-          enableGridY={false} // Disable grid lines on the Y-axis
-          axisBottom={{
-            tickSize: 0, // Set tick size to 0 for a cleaner appearance
-            tickPadding: 0, // Remove tick padding
-            tickRotation: 0, // Rotate ticks to 0 degrees
-            tickValues: [0, 10, 20, 30] // Define specific tick values
-          }}
-          layers={[
-            'grid',
-            'axes',
-            'bars',
-            'markers',
-            'legends',
-            'annotations',
-            (
-              { bars } // Custom layer to render data labels
-            ) => (
-              <g>
-                {bars.map(({ x, y, data: { indexValue } }) => (
-                  <text
-                    key={`${x}.${y}`}
-                    x={10}
-                    y={y + 28}
-                    textAnchor="start"
-                    className="m-12 font-semibold"
-                  >
-                    {indexValue}
-                  </text>
-                ))}
-              </g>
-            )
-          ]}
-          gridXValues={6}
-          // Customize the chart's visual theme
-          theme={{
-            // Customize grid lines
-            grid: { line: { stroke: '#f3f4f6' } }
-          }}
-          markers={[
-            {
-              axis: 'x',
-              value: 0,
-              lineStyle: { stroke: '#000', strokeWidth: 2 }, // Customize line style
-              legendOrientation: 'vertical'
-            }
-          ]}
-          maxValue={30} // Set the maximum value for the chart
-          label={({ indexValue }) => `${indexValue}`} // Customize labels for each bar
-          tooltip={(
-            d // Custom tooltip rendering
-          ) => (
-            <div className="flex items-center justify-center rounded-sm bg-white p-2">
-              <div className={`h-4 w-6 rounded-sm bg-[#bfa9f9]`} />
-              <span className="flex">
-                <span className="ml-2">
-                  {d.indexValue} : {d.value} %
-                </span>
-              </span>
-            </div>
-          )}
-          enableLabel={false}
-          role="application"
-          ariaLabel="Demographics chart"
-        />
-      </div>
-    </CardContent>
-  </Card>
-)
+  title,
+  valueKey,
+  color,
+  height = 350
+}) => {
+  const chartConfig: ChartConfig = {
+    [valueKey]: {
+      label: valueKey,
+      color: color,
+    },
+  };
 
-export default HorizontalBarChart
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ResponsiveContainer height={height}>
+          <ChartContainer config={chartConfig}>
+            <BarChart
+               data={data} // Data array for bar chart
+               layout="vertical" // Display bars vertically
+               margin={{
+                 left: -20, // Adjust left margin for labels
+               }}
+            >
+              {/* Remove horizontal grid lines */}
+              <CartesianGrid horizontal={false} />
+              {/* XAxis for numeric axis */}
+              <XAxis 
+                type="number" // Numeric axis type
+                dataKey={valueKey} // Access data value using valueKey
+                tickLine={false} 
+                axisLine={false}
+                padding={{ left: 1 }} 
+                domain={[0, 30]} // Domain of axis values
+                tickCount={4} // Number of ticks
+              />
+               {/* YAxis for categorical axis */}
+              <YAxis
+                dataKey="age"
+                type="category"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={{ stroke: '#000' }}
+                tick={false}
+                width={25}
+                padding={{top:10, bottom:10}}
+                strokeWidth={2}
+                reversed
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              {/* Bar component for rendering bars */}
+              <Bar dataKey={valueKey} fill={`var(--color-${valueKey})`}>
+                {/* LabelList for displaying labels */}
+                <LabelList
+                  dataKey="age" // Access 'age' field for labels
+                  position="insideLeft" // Position inside bars
+                  offset={8}
+                  className="fill-[--color-label]"
+                  fontSize={16}
+                  fontWeight={600}
+                />
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default HorizontalBarChart;

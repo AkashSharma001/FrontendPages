@@ -8,36 +8,38 @@ export function DataSourceDetail() {
   const sampleLineChartData = [
     {
       id: 'A',
+      color: '#577fed',
       data: [
-        { x: '2019', y: 5 },
-        { x: '2019.2', y: 8 },
-        { x: '2019.5', y: 12 },
-        { x: '2020', y: 14 },
-        { x: '2020.6', y: 12 },
-        { x: '2021.4', y: 10 },
-        { x: '2022.1', y: 11 },
-        { x: '2022.45', y: 13.5 },
-        { x: '2022.6', y: 16.3 },
-        { x: '2022.7', y: 19.5 }
+        { year: '2019', value: 5 },
+        { year: '2019.2', value: 8 },
+        { year: '2019.5', value: 12 },
+        { year: '2020', value: 14 },
+        { year: '2020.6', value: 12 },
+        { year: '2021.4', value: 10 },
+        { year: '2022.1', value: 11 },
+        { year: '2022.45', value: 13.5 },
+        { year: '2022.6', value: 16.3 },
+        { year: '2022.7', value: 19.5 }
       ]
     },
     {
       id: 'B',
+      color: '#5228cb',
       data: [
-        { x: '2019', y: 0 },
-        { x: '2019.3', y: 5 },
-        { x: '2019.55', y: 8 },
-        { x: '2020.2', y: 12 },
-        { x: '2020.8', y: 8.5 },
-        { x: '2021.6', y: 5 },
-        { x: '2022.2', y: 6.3 },
-        { x: '2022.6', y: 9.2 },
-        { x: '2022.9', y: 12.5 },
-        { x: '2023.1', y: 15.5 },
-        { x: '2023.2', y: 18.8 }
+        { year: '2019', value: 0 },
+        { year: '2019.3', value: 5 },
+        { year: '2019.55', value: 8 },
+        { year: '2020.2', value: 12 },
+        { year: '2020.8', value: 8.5 },
+        { year: '2021.6', value: 5 },
+        { year: '2022.2', value: 6.3 },
+        { year: '2022.6', value: 9.2 },
+        { year: '2022.9', value: 12.5 },
+        { year: '2023.1', value: 15.5 },
+        { year: '2023.2', value: 18.8 }
       ]
     }
-  ]
+  ];
 
   const sampleHorizontalBarChartData = [
     { age: '85+', percentage: 7 },
@@ -168,8 +170,11 @@ export function DataSourceDetail() {
             patientsRepresented={2.5}
           />
           <HorizontalBarChart
-            className="h-[350px] w-full"
             data={sampleHorizontalBarChartData}
+            title="Demographics %"
+            valueKey="percentage"
+            color="#bfa9f9"
+            height={350}
           />
         </div>
       </div>
