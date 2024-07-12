@@ -1,4 +1,5 @@
-import { DataSourceDetail } from '@/components/DataSourceDetail'
+import  DataSourceDetail  from "components/DataSourceDetail";
+
 
 export default function Home() {
   return (

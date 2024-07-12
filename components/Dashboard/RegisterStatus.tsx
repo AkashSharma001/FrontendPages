@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from '@/lib/utils'
+import { cn } from "lib/utils"
 
 // Define the stages of the registration process
 const STAGES: string[] = [
