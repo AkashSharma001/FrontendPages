@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { CartesianGrid, DotProps, Line, LineChart, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
-import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
+import type { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 
 // Define types for our data
 type DataPoint = {
@@ -46,7 +46,7 @@ const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, pa
     return (
       <div className="custom-tooltip" style={{ backgroundColor: 'white', padding: '5px', border: '1px solid #ccc' }}>
         <p className="label">{`Year: ${label}`}</p>
-        <p>{`${hoveredPayload?.dataKey}: ${hoveredPayload?.value}`}</p>
+        <p>{`${hoveredPayload?.dataKey as string}: ${hoveredPayload?.value as string}`}</p>
       </div>
     );
   }
@@ -70,7 +70,7 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, className }) => {
     <div className={className}>
       {/* ResponsiveContainer for responsive chart size */}
       <ResponsiveContainer width="100%" >
-         {/* LineChart component from Recharts */}
+        {/* LineChart component from Recharts */}
         <LineChart margin={{ right: 15 }} >
           {/* CartesianGrid for grid lines */}
           <CartesianGrid vertical={true} syncWithTicks={true} />
@@ -80,7 +80,13 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, className }) => {
             type="number" // Numeric axis type
             domain={[2019, 2023]} // Domain of axis values
             ticks={allTicks} // Custom ticks with half-year intervals
-            tickFormatter={(value) => Number.isInteger(value) ? value.toString() : ''} // Format ticks
+            tickFormatter={(value: number | string | undefined) => {
+              if (typeof value === 'number' && Number.isInteger(value)) {
+                return value.toString();
+              } else {
+                return '';
+              }
+            }}
             interval={0} // Interval between ticks
             tickLine={false}
             axisLine={false}
@@ -99,7 +105,7 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, className }) => {
           {/* Tooltip component with custom content */}
           <Tooltip content={<CustomTooltip />} />
           {/* Render each line based on provided data */}
-          {data.map((lineData, index) => (
+          {data.map((lineData) => (
             <Line
               key={lineData.id}
               dataKey="value" // Access 'value' field in data
